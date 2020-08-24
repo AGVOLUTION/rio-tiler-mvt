@@ -10,6 +10,7 @@ cpdef bytes encoder(
     list band_names = [],
     str layer_name = "my_layer",
     str feature_type = "point",
+    clipped_polygons = {}
 ):
     cdef int sc = 4096 // data.shape[1]
     cdef tuple indexes = numpy.where(mask)
@@ -25,9 +26,9 @@ cpdef bytes encoder(
     mvt = Tile()
     mvt_layer = Layer(mvt, layer_name.encode())
     for idx in zip(indexes[1], indexes[0]):
-        x, y = idx
-        x *= sc
-        y *= sc
+        i, j = idx
+        x = i * sc
+        y = j * sc
 
         if feature_type == 'point':
             feature = Point(mvt_layer)
@@ -35,12 +36,23 @@ cpdef bytes encoder(
         
         elif feature_type == 'polygon':
             feature = Polygon(mvt_layer)
-            feature.add_ring(5)
-            feature.set_point(x, y)
-            feature.set_point(x + sc, y)
-            feature.set_point(x + sc, y - sc)
-            feature.set_point(x, y - sc)
-            feature.set_point(x, y)
+            
+            if (i, j) in clipped_polygons:
+                coords = clipped_polygons[(i,j)]
+
+                if len(coords) > 0:
+                    feature.add_ring(len(coords))
+                    for cx, cy in coords:
+                        feature.set_point(x + round(cx * sc), y + round(cy * sc))
+
+            else:
+                feature.add_ring(5)
+                feature.set_point(x, y)
+                feature.set_point(x + sc, y)
+                feature.set_point(x + sc, y - sc)
+                feature.set_point(x, y - sc)
+                feature.set_point(x, y)
+            
         else:
             raise Exception(f"Invalid geometry type: {feature_type}")
 
