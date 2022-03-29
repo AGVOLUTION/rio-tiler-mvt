@@ -13,9 +13,10 @@ with open("README.md") as f:
 inst_reqs = ["numpy", "vtzero"]
 
 vt = "vector-tile-base @ git+https://github.com/mapbox/vector-tile-base.git"
+rio_tiler = "rio-tiler==1.4.0"
 extra_reqs = {
-    "test": [vt, "rio-tiler", "pytest", "pytest-cov"],
-    "dev": [vt, "rio-tiler", "pytest", "pytest-cov", "pre-commit"],
+    "test": [vt, rio_tiler, "pytest", "pytest-cov"],
+    "dev": [vt, rio_tiler, "pytest", "pytest-cov", "pre-commit"],
 }
 
 ext_options = {"include_dirs": [numpy.get_include()]}
