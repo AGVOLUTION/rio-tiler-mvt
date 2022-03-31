@@ -46,6 +46,7 @@ cpdef bytes encoder(
                     px, py = x + round(cx * sc), y + round(cy * sc)
                     if px != prevx and py != prevy:
                         points.append((px, py))
+                    prevx, prevy = px, py
 
                 if len(points) > 0:
                     feature.add_ring(len(points))
