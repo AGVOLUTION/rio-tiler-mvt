@@ -1,10 +1,12 @@
 """tests ard_tiler.mosaic."""
 
+import json
 import os
+import numpy as np
 
 import pytest
 
-from rio_tiler.main import tile as cogTiler
+from rio_tiler.io import COGReader
 from rio_tiler_mvt.mvt import encoder
 
 import vector_tile_base
@@ -14,7 +16,7 @@ x = 72
 y = 63
 z = 7
 
-tile, mask = cogTiler(asset, x, y, z, resampling_method="nearest")
+tile, mask = COGReader(asset).tile(x, y, z, resampling_method="nearest")
 
 
 def test_mvt_encoder():
@@ -60,3 +62,19 @@ def test_mvt_encoder():
     # Test bad feature type
     with pytest.raises(Exception):
         encoder(tile, mask, feature_type="somethingelse")
+
+    
+def test_clipped_polygons():
+    clipped_polygons = json.load(open(os.path.join(os.path.dirname(__file__), "fixtures", "clipped_polygons.json")))
+    layer_channels = json.load(open(os.path.join(os.path.dirname(__file__), "fixtures", "layer_channels.json")))
+    mask = np.load(os.path.join(os.path.dirname(__file__), "fixtures", "mask.np"))
+    tile = np.load(os.path.join(os.path.dirname(__file__), "fixtures", "tile.np"))
+
+    clipped_polygons = {tuple(d["key"]): d["value"] for d in clipped_polygons}
+    # print(tile)
+    # print(mask)
+
+    vt = encoder(tile, mask, layer_channels, "tile", feature_type="polygon", clipped_polygons=clipped_polygons)
+    mvt = vector_tile_base.VectorTile(vt)
+
+    print(mvt.layers[0].features[0])

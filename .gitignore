@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 rio_tiler_mvt/mvt.c
+.DS_Store
