@@ -10,7 +10,7 @@ import numpy
 with open("README.md") as f:
     long_description = f.read()
 
-vtzero = "vtzero @ git+https://github.com/schneidemar/python-vtzero.git@d85a55387a15c69b149915beab8ce738ed3de0e3#egg=vtzero"
+vtzero = "vtzero @ git+https://github.com/tilery/python-vtzero.git@a6c1cae7ed23f7d445c93c88ace12257da70548a#egg=vtzero"
 inst_reqs = ["numpy", vtzero, "Cython"]
 
 vt = "vector-tile-base @ git+https://github.com/mapbox/vector-tile-base.git"
