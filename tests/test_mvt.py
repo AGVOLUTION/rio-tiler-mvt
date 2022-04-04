@@ -75,6 +75,14 @@ def test_clipped_polygons():
     # print(mask)
 
     vt = encoder(tile, mask, layer_channels, "tile", feature_type="polygon", clipped_polygons=clipped_polygons)
-    mvt = vector_tile_base.VectorTile(vt)
+    
+    with open("tile.vt", "wb") as f:
+        f.write(vt)
+        
 
-    print(mvt.layers[0].features[0])
+def test_tile_min_max():
+    with open(os.path.join(os.path.dirname(__file__), "fixtures", "680.pbf"), "rb") as f:
+        vt = f.read()
+        mvt = vector_tile_base.VectorTile(vt)
+        for feat in mvt.layers[0].features:
+            print(feat.attributes)
