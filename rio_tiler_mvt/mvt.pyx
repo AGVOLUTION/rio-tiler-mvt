@@ -1,4 +1,4 @@
-import numpy 
+import numpy
 
 from vtzero.tile import Tile, Layer, Point, Polygon
 
@@ -33,10 +33,10 @@ cpdef bytes encoder(
         if feature_type == 'point':
             feature = Point(mvt_layer)
             feature.add_point(x + sc / 2, y - sc / 2)
-        
+
         elif feature_type == 'polygon':
             feature = Polygon(mvt_layer)
-            
+
             if (i, j) in clipped_polygons:
                 coords = clipped_polygons[(i,j)]
 
@@ -52,16 +52,24 @@ cpdef bytes encoder(
                 feature.set_point(x + sc, y - sc)
                 feature.set_point(x, y - sc)
                 feature.set_point(x, y)
-            
+
         else:
             raise Exception(f"Invalid geometry type: {feature_type}")
 
-        # TODO: fix https://github.com/tilery/python-vtzero/issues/3
         for bidx in range(data.shape[0]):
-            feature.add_property(
-                band_names[bidx].encode(), 
-                str(data[bidx, idx[1], idx[0]]).encode()
-            )
+            key_str = band_names[bidx].encode()
+            value = data[bidx, idx[1], idx[0]]
+
+            t = type(value)
+            if t is float:
+                feature.add_property_float(key_str, value)
+            elif t is int:
+                feature.add_property_uint64_t(key_str, value)
+            elif t is str:
+                feature.add_property_string(key_str, str(value).encode())
+            else:
+                raise Exception(f"unsupported type for add_property: {value}")
+
         feature.commit()
 
     return mvt.serialize()

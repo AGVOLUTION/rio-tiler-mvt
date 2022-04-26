@@ -3,6 +3,7 @@
 from setuptools.extension import Extension
 from setuptools import setup, find_packages
 from Cython.Build import cythonize
+import os
 
 import numpy
 
@@ -10,7 +11,10 @@ import numpy
 with open("README.md") as f:
     long_description = f.read()
 
-vtzero = "vtzero @ git+https://github.com/schneidemar/python-vtzero.git@d85a55387a15c69b149915beab8ce738ed3de0e3#egg=vtzero"
+# vtzero = "vtzero @ git+https://github.com/schneidemar/python-vtzero.git@d85a55387a15c69b149915beab8ce738ed3de0e3#egg=vtzero"
+vtzero = "vtzero @ git+https://github.com/AGVOLUTION/python-vtzero.git@bc48b6d4fb36c5ea387710203cda78b1cd53b100#egg=vtzero"
+# vtzero = f"vtzero @ file://localhost/{os.getcwd()}/../python-vtzero#egg=vtzero"
+
 inst_reqs = ["numpy", vtzero, "Cython"]
 
 vt = "vector-tile-base @ git+https://github.com/mapbox/vector-tile-base.git"
@@ -22,12 +26,13 @@ extra_reqs = {
 
 ext_options = {"include_dirs": [numpy.get_include()]}
 ext_modules = cythonize(
-    [Extension("rio_tiler_mvt.mvt", ["rio_tiler_mvt/mvt.pyx"], **ext_options)]
+    [Extension("rio_tiler_mvt.mvt", ["rio_tiler_mvt/mvt.pyx"], **ext_options)],
+    language_level="3",
 )
 
 setup(
     name="rio-tiler-mvt",
-    version="0.0.1dev1",
+    version="0.0.2",
     description=u"""A rio-tiler plugin to encode tile array to MVT""",
     long_description=long_description,
     long_description_content_type="text/markdown",

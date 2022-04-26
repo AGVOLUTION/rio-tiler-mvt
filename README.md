@@ -1,9 +1,16 @@
+# agv notes:
+
+to patch vtzero locally:
+`vtzero = f"vtzero @ file://localhost/{os.getcwd()}/../python-vtzero#egg=vtzero"`
+
+to test it run:
+`pip3 install --no-cache-dir .[test]`
+
 # rio-tiler-mvt
 
 [![Packaging status](https://badge.fury.io/py/rio-tiler-mvt.svg)](https://badge.fury.io/py/rio-tiler-mvt)
 [![CircleCI](https://circleci.com/gh/cogeotiff/rio-tiler-mvt.svg?style=svg)](https://codecov.io/gh/cogeotiff/rio-tiler-mvt)
 [![codecov](https://codecov.io/gh/cogeotiff/rio-tiler-mvt/branch/master/graph/badge.svg)](https://circleci.com/gh/cogeotiff/rio-tiler-mvt)
-
 
 A rio-tiler plugin to translate tile array to MVT (using python-vtzero)
 
@@ -22,7 +29,9 @@ $ pip install cython~=0.28 # see https://github.com/tilery/python-vtzero#require
 
 $ pip install rio-tiler-mvt
 ```
-Or 
+
+Or
+
 ```bash
 $ git clone http://github.com/cogeotiff/rio-tiler-mvt
 $ cd rio-tiler-mvt
@@ -36,6 +45,7 @@ $ pip install -e .
 `mvt.encoder(data, mask, band_names=[], layer_name="my_layer", feature_type="point")`
 
 Inputs:
+
 - data : raster tile data to encode
 - mask : mask data
 - band_names : Raster band's names
@@ -43,8 +53,8 @@ Inputs:
 - feature_type : Feature type (point or polygon)
 
 Returns:
-- mvt : Mapbox Vector Tile encoded data.
 
+- mvt : Mapbox Vector Tile encoded data.
 
 ## Contribution & Development
 
@@ -60,14 +70,14 @@ $ pip install -e .[dev]
 
 **Python3.6 only**
 
-This repo is set to use `pre-commit` to run *flake8*, *pydocstring* and *black* ("uncompromising Python code formatter") when commiting new code.
+This repo is set to use `pre-commit` to run _flake8_, _pydocstring_ and _black_ ("uncompromising Python code formatter") when commiting new code.
 
 ```bash
 $ pre-commit install
 ```
 
-
 ## Implementations
+
 [cogeo-mosaic](http://github.com/developmentseed/cogeo-mosaic.git)
 
 [satellite-3d](http://github.com/developmentseed/satellite-3d.git)
