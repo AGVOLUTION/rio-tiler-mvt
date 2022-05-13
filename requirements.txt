@@ -1,2 +1,2 @@
 numpy
-git+https://github.com/schneidemar/python-vtzero.git@d85a55387a15c69b149915beab8ce738ed3de0e3#egg=vtzero
+git+https://github.com/AGVOLUTION/python-vtzero.git@bc48b6d4fb36c5ea387710203cda78b1cd53b100#egg=vtzero
