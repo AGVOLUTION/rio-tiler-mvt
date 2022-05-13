@@ -61,9 +61,9 @@ cpdef bytes encoder(
             value = data[bidx, idx[1], idx[0]]
 
             t = type(value)
-            if t is float:
+            if t is float or t is numpy.float64 or t is numpy.float32 or t is numpy.float16:
                 feature.add_property_float(key_str, value)
-            elif t is int:
+            elif t is int or t is numpy.int64 or t is numpy.int32 or t is numpy.int16:
                 feature.add_property_uint64_t(key_str, value)
             elif t is str:
                 feature.add_property_string(key_str, str(value).encode())
