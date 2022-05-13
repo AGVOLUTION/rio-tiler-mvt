@@ -39,19 +39,11 @@ cpdef bytes encoder(
 
             if (i, j) in clipped_polygons:
                 coords = clipped_polygons[(i,j)]
-                points = []
 
-                prevx, prevy = None, None
-                for cx, cy in coords:
-                    px, py = x + round(cx * sc), y + round(cy * sc)
-                    if px != prevx and py != prevy:
-                        points.append((px, py))
-                    prevx, prevy = px, py
-
-                if len(points) > 0:
-                    feature.add_ring(len(points))
-                    for px, py in points:
-                        feature.set_point(px, py)
+                if len(coords) > 0:
+                    feature.add_ring(len(coords))
+                    for cx, cy in coords:
+                        feature.set_point(x + round(cx * sc), y + round(cy * sc))
 
             else:
                 feature.add_ring(5)
